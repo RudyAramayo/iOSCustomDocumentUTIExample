@@ -1,0 +1,47 @@
+Shows how to use the UTI document declarations:
+
+(http://developer.apple.com/library/IOs/#documentation/DataManagement/Conceptual/DocumentBasedAppPGiOS/DocumentImplPreflight/DocumentImplPreflight.html)
+
+
+Document declaration in the app DocTypes-Info.plist file.
+
+2 properties you should look at that were added to this plist:
+•Document Types Array and an example
+•ExportedTypeUTIs
+
+
+You can now open pdb files that you get in mail from your iOS device with your app…
+
+app delegate needs the following override to receive the file (notice the 2 options, if the app is already launched, and if the app is cold when signaled to launch with the file) :
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    // Override point for customization after application launch.
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
+    
+    NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+    NSLog(@"URL = %@", [url description]);
+    if ([url isFileURL]) 
+    {
+        //Do something with the file URL!
+    }
+
+    
+    
+    return YES;
+}
+
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    NSLog(@"URL = %@", [url description]);
+    if ([url isFileURL]) 
+    {
+        //Do something with the file URL!
+    }
+
+    return YES;
+}
